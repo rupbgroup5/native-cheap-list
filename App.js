@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 
-//my screens:
+//our screens:
 import FCLogIn from './Components/FCLogIn';
 import FCRegister from './Components/FCRegister';
 const Stack = createStackNavigator();

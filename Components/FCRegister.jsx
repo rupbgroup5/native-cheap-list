@@ -3,8 +3,6 @@ import {
   Button,
   TouchableOpacity,
   StyleSheet,
-  Dimensions,
-  Text,
   View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -103,8 +101,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
-
 });
 
 export default FCRegister;
