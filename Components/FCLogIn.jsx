@@ -7,49 +7,25 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Input } from 'react-native-elements'
-import { SocialIcon } from 'react-native-elements'
-import * as  Facebook from 'expo-facebook'
+import RedirectApp2Web from '../GlobalFunctions/RedirectApp2Web'
+//import insert from '../GlobalFunctions/RedirectApp2Web' for when I get the contacts...
 
 
-import * as WebBrowser from 'expo-web-browser';
+//social media:
+import FaceBookLoginBtn from '../SocialNetwork/FacebookLogin'
+import GoogleLoginBtn from '../SocialNetwork/GoogleLogin'
 
-//import { PermissionsAndroid } from 'react-native'; //need to check if apple needs permission as well
-//import Contacts from 'react-native-contacts';
+
 
 
 export default function App({ navigation }) {
   let userName = "";
   let password = "";
-  let apiUrl = 'http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/PostUser/{newUser}';
-  
-  //facebook 
-  let facebookAppID = '978843372530945';
- 
 
   const [secureTextEntryToggle, set_secureTextEntryToggle] = useState(true);
   const [eye, set_eye] = useState('eye-slash');
 
-  // useEffect(() => {
-  // PermissionsAndroid.request(
-  // PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-  // {
-  // 'title': 'Contacts',
-  // 'message': 'This app would like to view your contacts.',
-  // 'buttonPositive': 'Please accept bare mortal'
-  // }
-  // ).then(() => {
-  // Contacts.getAll((err, contacts) => {
-  // if (err === 'denied' || err ){
-  // console.log("huston we have a problem ==> "+err);
-
-  // } else {
-  // console.log('great success !');
-  // console.log(contacts[0]);
-  // }
-  // })
-  // })
-  // }, []);
-
+  //onChange:
   let userNameTxt = (name) => {
     userName = name;
   }
@@ -61,64 +37,33 @@ export default function App({ navigation }) {
   let change_secureTextEntry = () => {
     set_secureTextEntryToggle(!secureTextEntryToggle);
     secureTextEntryToggle ? set_eye('eye') : set_eye('eye-slash');
+
   }
+
 
   let LogIn = () => {
-    let userAuthentication = {
-      UserName: userName,
-      UserPassword: password,
-      UserMail: 'temp@expermental@gmail.com',
-      UserAdress: 'Experemntal City',
 
-    }
-    //post expermental data to our db (future to be contacts list with proper key)
-    insertData2DB(userAuthentication)
-    //send the key which tell the web wich info it should fetch:
-            //YET 2 BE PROGRAMED !!!
-    //move to our web app: + need to send key !!!!!
-    WebBrowser.openBrowserAsync('http://proj.ruppin.ac.il/bgroup5/FinalProject/frontEnd/');
+    //#region EXPORT TO REGISTER PAGE
+    /* 
+        let userAuthentication = {
+          UserName: userName,
+          UserPassword: password,
+          UserMail: 'temp@expermental@gmail.com',
+          UserAdress: 'Experemntal City',
+        }
+        post expermental data to our db (future to be contacts list with proper key)
+        insertData2DB(userAuthentication); KNOW THAT THIS IS WORKING WHEN I NEED IT TO THE REGISTER PAGE
+        send the key which tell the web wich info it should fetch:
+        YET 2 BE PROGRAMED !!!
+    endregion*/
+    //#endregion
+
+    RedirectApp2Web(userName);
   }
 
-  let insertData2DB = (userDetails) => {
-    fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: JSON.stringify(userDetails),
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-      })
-      .catch((error) => {
-        console.error('some error catched ', error);
-      });
-
-  }
 
   let GoToRegister = () => {
     navigation.navigate('Cheap List Register');
-  }
-
-  let googleReg = () => {
-    alert('google register')
-  }
-
-  let facebookReg = async () => {
-    
-    const { type, token, expires, permissions,} = await Facebook.logInWithReadPermissionsAsync(
-      facebookAppID, { permissions: ['public_profile'],});
-      if(type === 'success'){
-        const response = await fetch
-        fetch(`https://graph.facebook.com/ me?fields id,name,email,picture&access_token =${token}`);
-        let res = await response.json();
-       console.log(`hello ${res.name}`);
-       
-      }
-    
-
   }
 
   return (
@@ -138,8 +83,8 @@ export default function App({ navigation }) {
         <Button title="הכנס" onPress={LogIn} />
       </View>
       <View>
-        <SocialIcon title='הרשם באמצעות פייסבוק' button type='facebook' onPress={facebookReg} />
-        <SocialIcon title='הרשם באמצעות גוגל' button type='google' onPress={googleReg} />
+        <FaceBookLoginBtn />
+        <GoogleLoginBtn />
       </View>
       <View>
         <Button title="רוצה ליצור משתמש ללא שימוש ברשת חברתית?" onPress={GoToRegister} />
