@@ -1,15 +1,8 @@
 import React, { useState } from 'react'
-import {
-  Button,
-  TouchableOpacity,
-  StyleSheet,
-  View
-} from 'react-native'
+import { Button, TouchableOpacity, StyleSheet, View } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Input } from 'react-native-elements'
 import RedirectApp2Web from '../GlobalFunctions/RedirectApp2Web'
-//import insert from '../GlobalFunctions/RedirectApp2Web' for when I get the contacts...
-
 
 //social media:
 import FaceBookLoginBtn from '../SocialNetwork/FacebookLogin'
@@ -42,23 +35,33 @@ export default function App({ navigation }) {
 
 
   let LogIn = () => {
+    let usersData = {
+      UserName: userName,
+      UserPassword: password
+    }
+    fetch(`http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/AuthenticateUserLogin/${usersData.UserName}/${usersData.UserPassword}`, {
+      method: 'GET',
+      headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json; charset=UTF-8',
+      },
+  })
+      .then((response) => {
+          response.json();
+      })
+      .then((json) => {
+        usersData = json;
+      })
+      .catch((error) => {
+          console.error('some error catched ', error);
+      });
 
-    //#region EXPORT TO REGISTER PAGE
-    /* 
-        let userAuthentication = {
-          UserName: userName,
-          UserPassword: password,
-          UserMail: 'temp@expermental@gmail.com',
-          UserAdress: 'Experemntal City',
-        }
-        post expermental data to our db (future to be contacts list with proper key)
-        insertData2DB(userAuthentication); KNOW THAT THIS IS WORKING WHEN I NEED IT TO THE REGISTER PAGE
-        send the key which tell the web wich info it should fetch:
-        YET 2 BE PROGRAMED !!!
-    endregion*/
-    //#endregion
 
-    RedirectApp2Web(userName);
+    if (usersData === undefined) {
+      alert('ככל הנראה ההתאמה בין שם המשתמש והסיסמא שגויה');
+    } else {
+      RedirectApp2Web(usersData.UserName); // for future fix, maybe it should be sending name and password or make name uniqe in the database
+    }
   }
 
 

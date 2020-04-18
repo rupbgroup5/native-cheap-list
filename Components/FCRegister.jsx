@@ -7,6 +7,8 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
+import insert from '../DBfunctions/Insert'
+import RedirectApp2Web from '../GlobalFunctions/RedirectApp2Web'
 
 
 
@@ -29,8 +31,16 @@ let FCRegister = ({ navigation }) => {
   }
 
   let RegisterAndThenLogin = () => {
-    userPassword !== userRePassword ? alert('הסיסמאות אינן תואמות')
-      : checkEmail(userEmail) ? alert('please enter valid email') : alert('register and log in');
+    // userPassword !== userRePassword ? alert('הסיסמאות אינן תואמות')
+    //   : checkEmail(userEmail) ? alert('please enter valid email');
+    let newUser = {
+      UserName: userName,
+      UserPassword: userPassword,
+      UserMail: userEmail,
+  }
+  insert(newUser);
+  RedirectApp2Web(newUser.UserName);
+
   }
 
   let userNameChange = (name) => {

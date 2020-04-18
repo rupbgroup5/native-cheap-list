@@ -1,4 +1,4 @@
-let backEnDApiUrl = 'http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/PostUser/{newUser}';
+let backEnDApiUrl = 'http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/PostUser';
 
 const insert = (userDetails) => {
     fetch(backEnDApiUrl, {
@@ -20,14 +20,3 @@ const insert = (userDetails) => {
 }
 
 export default insert
-
-
-
-
-
-
-
-
-
-
-

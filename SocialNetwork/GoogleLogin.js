@@ -2,16 +2,15 @@ import React from 'react';
 import { SocialIcon } from 'react-native-elements'
 import * as Google from 'expo-google-app-auth'
 import RedirectApp2Web from '../GlobalFunctions/RedirectApp2Web'
-
+import insert from '../DBfunctions/Insert'
 
 
 const config = {
     androidClientId: `165128669288-5afsahev8obo4h0ab6eusou5rkn4qgi7.apps.googleusercontent.com`,
 }
 let newUser = {
-    name: "",
-    email: "",
-    photoUrl: "",
+    UserName: "",
+    UserMail: "",
 }
 
 let GoogleLogin = async () => {
@@ -22,10 +21,13 @@ let GoogleLogin = async () => {
             headers: { Authorization: `Bearer ${accessToken}` },
         });
 
-        newUser.name = user.name;
-        newUser.email = user.email;
-        newUser.photoUrl = user.photoUrl;
+        newUser.UserName = user.name;
+        newUser.UserMail = user.email;
+        console.log(newUser.UserName + " " + newUser.UserMail);
 
+        //if I wants to obtain an img: --> newUser.photoUrl = user.photoUrl;
+        insert(newUser);
+        RedirectApp2Web(newUser.UserName);
     }
 }
 
