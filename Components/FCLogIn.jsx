@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { Input } from 'react-native-elements'
 import RedirectApp2Web from '../GlobalFunctions/RedirectApp2Web'
 import DialogInput from 'react-native-dialog-input';
-import { sendEmail } from '../GlobalFunctions/sendEmail';
 
 //social media:
 import FaceBookLoginBtn from '../SocialNetwork/FacebookLogin'
@@ -87,7 +86,7 @@ export default function App({ navigation }) {
         // console.log("userPassword: ",userDetails.UserPassword);
         
        
-        alert('סיסמתך נשלחה למייל שמזוהה אם המשתמש/ת שלך'); //not suported yet need to check how to do in c#
+        alert('סיסמתך נשלחה למייל שמזוהה אם המשתמש/ת שלך'); //not suported yet need to check how to do in c# !!!
         set_isDialogVisible_Iforgot(false);
       })
       .catch((error) => {
