@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  TouchableOpacity,
-  StyleSheet,
-  View
-} from 'react-native';
+import { Button, TouchableOpacity, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
 import insert from '../DBfunctions/Insert'
@@ -12,7 +7,7 @@ import RedirectApp2Web from '../GlobalFunctions/RedirectApp2Web'
 
 
 
-let FCRegister = ({ navigation }) => {
+let FCRegister = () => {
   let userName = "";
   let userPassword = "";
   let userRePassword = "";
@@ -30,9 +25,20 @@ let FCRegister = ({ navigation }) => {
     return mail.includes('@') && mail.includes('.') && mail.includes('com') || mail.includes('co.il') || mail.includes('net');
   }
 
+  let checkPasswordMatch = () =>{ return !(userPassword === userRePassword); }
+
   let RegisterAndThenLogin = () => {
-    // userPassword !== userRePassword ? alert('הסיסמאות אינן תואמות')
-    //   : checkEmail(userEmail) ? alert('please enter valid email');
+
+    if (userName === "") {
+      return alert('חייב להכניס שם משתמש/ת');
+    }
+    if (!checkEmail(userEmail) || userEmail === "") {
+      return alert('אנא הכניסו מייל חוקי');
+    }
+    if (checkPasswordMatch()) {
+      return alert('נראה שהסיסמא אינן תואמות');
+    }
+
     let newUser = {
       UserName: userName,
       UserPassword: userPassword,
@@ -43,21 +49,13 @@ let FCRegister = ({ navigation }) => {
 
   }
 
-  let userNameChange = (name) => {
-    userName = name;
-  }
+  let userNameChange = (name) => { userName = name; }
 
-  let emailChange = (mail) => {
-    userEmail = mail;
-  }
+  let emailChange = (mail) => { userEmail = mail; }
 
-  let passwordChange = (password) => {
-    userPassword = password;
-  }
+  let passwordChange = (password) => { userPassword = password; }
 
-  let rePasswordChange = (rePassword) => {
-    userRePassword = rePassword;
-  }
+  let rePasswordChange = (rePassword) => { userRePassword = rePassword; }
 
 
   return (

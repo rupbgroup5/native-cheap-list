@@ -14,7 +14,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Cheap List Log In" component={FCLogIn}
+        <Stack.Screen name="דף כניסה" component={FCLogIn}
           options={{
             headerStyle: {
               backgroundColor: '#3498eb',
@@ -27,7 +27,7 @@ export default function App() {
 
           }}
         />
-        <Stack.Screen name="Cheap List Register" component={FCRegister}
+        <Stack.Screen name="דף הרשמה" component={FCRegister}
           options={{
             headerStyle: {
               backgroundColor: '#3498eb',

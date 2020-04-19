@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { Button, TouchableOpacity, StyleSheet, View } from 'react-native'
+import { Button, TouchableOpacity, StyleSheet, View, Text } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Input } from 'react-native-elements'
 import RedirectApp2Web from '../GlobalFunctions/RedirectApp2Web'
+import DialogInput from 'react-native-dialog-input';
+import { sendEmail } from '../GlobalFunctions/sendEmail';
 
 //social media:
 import FaceBookLoginBtn from '../SocialNetwork/FacebookLogin'
@@ -17,7 +19,7 @@ export default function App({ navigation }) {
 
   const [secureTextEntryToggle, set_secureTextEntryToggle] = useState(true);
   const [eye, set_eye] = useState('eye-slash');
-
+  const [isDialogVisible_Iforgot, set_isDialogVisible_Iforgot] = useState(false);
   //onChange:
   let userNameTxt = (name) => {
     userName = name;
@@ -42,18 +44,18 @@ export default function App({ navigation }) {
     fetch(`http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/AuthenticateUserLogin/${usersData.UserName}/${usersData.UserPassword}`, {
       method: 'GET',
       headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json; charset=UTF-8',
+        Accept: 'application/json',
+        'Content-Type': 'application/json; charset=UTF-8',
       },
-  })
+    })
       .then((response) => {
-          response.json();
+        response.json();
       })
       .then((json) => {
         usersData = json;
       })
       .catch((error) => {
-          console.error('some error catched ', error);
+        console.error('some error catched ', error);
       });
 
 
@@ -64,13 +66,47 @@ export default function App({ navigation }) {
     }
   }
 
+  let checkEmail = (mail) => {
+    return mail.includes('@') && mail.includes('.') && mail.includes('com') || mail.includes('co.il') || mail.includes('net');
+  }
 
-  let GoToRegister = () => {
-    navigation.navigate('Cheap List Register');
+
+  let GoToRegister = () => { navigation.navigate('דף הרשמה'); }
+
+  let forgot = () => { set_isDialogVisible_Iforgot(true); }
+
+  let getDetaildAndSendMail = async (mail) => {
+    if (checkEmail(mail)) {
+      let mailWithNoDots = mail.replace(".", "_");
+      let goFetchPass = `http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/GetUserPass/${mailWithNoDots}`
+
+      fetch(goFetchPass)
+      .then((response) => response.json())
+      .then((userDetails) => {
+        // console.log("userMail: ",userDetails.UserMail);
+        // console.log("userPassword: ",userDetails.UserPassword);
+        
+       
+        alert('סיסמתך נשלחה למייל שמזוהה אם המשתמש/ת שלך'); //not suported yet need to check how to do in c#
+        set_isDialogVisible_Iforgot(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    } else {
+      alert('יש להקליד מייל חוקי');
+    }
   }
 
   return (
     <View style={styles.container}>
+      <DialogInput
+        isDialogVisible={isDialogVisible_Iforgot}
+        title={"אויש שחכתי"}
+        message={"אנא הכניסו את המייל שמזוהה עם המשתמש/ת שלכם"}
+        submitInput={(mail) => { getDetaildAndSendMail(mail) }}
+        closeDialog={() => { set_isDialogVisible_Iforgot(false); }}>
+      </DialogInput>
       <View></View>
       <View>
         <Input placeholder='שם משתמש' rightIcon={<Icon name='user' size={24} />}
@@ -84,6 +120,12 @@ export default function App({ navigation }) {
           onChangeText={userPassTxt} // by default sends the value... like in react.js e.target.value
         />
         <Button title="הכנס" onPress={LogIn} />
+        <View>
+          <Text style={styles.txt}>
+            שחכתם סיסמא או את שם המשתמש/ת? לחץ כאן ↓
+          </Text>
+        </View>
+        <Button title='אויש שכחתי' onPress={forgot} />
       </View>
       <View>
         <FaceBookLoginBtn />
@@ -101,5 +143,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
   },
-
+  txt: {
+    textAlign: 'center'
+  }
 });
