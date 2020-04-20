@@ -82,11 +82,10 @@ export default function App({ navigation }) {
       fetch(goFetchPass)
       .then((response) => response.json())
       .then((userDetails) => {
-        // console.log("userMail: ",userDetails.UserMail);
-        // console.log("userPassword: ",userDetails.UserPassword);
-        
-       
-        alert('סיסמתך נשלחה למייל שמזוהה אם המשתמש/ת שלך'); //not suported yet need to check how to do in c# !!!
+        console.log("userMail: ",userDetails.UserMail);
+        console.log("userPassword: ",userDetails.UserPassword);
+     
+        alert('סיסמתך נשלחה למייל שמזוהה אם המשתמש/ת שלך'); //not suported yet need to check how to do it in c# !!!
         set_isDialogVisible_Iforgot(false);
       })
       .catch((error) => {
