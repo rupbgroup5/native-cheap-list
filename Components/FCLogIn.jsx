@@ -4,6 +4,8 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { Input } from 'react-native-elements'
 import RedirectApp2Web from '../GlobalFunctions/RedirectApp2Web'
 import DialogInput from 'react-native-dialog-input';
+import getUserContacts from '../GlobalFunctions/getUserContacts'
+
 
 //social media:
 import FaceBookLoginBtn from '../SocialNetwork/FacebookLogin'
@@ -19,6 +21,9 @@ export default function App({ navigation }) {
   const [secureTextEntryToggle, set_secureTextEntryToggle] = useState(true);
   const [eye, set_eye] = useState('eye-slash');
   const [isDialogVisible_Iforgot, set_isDialogVisible_Iforgot] = useState(false);
+
+
+
   //onChange:
   let userNameTxt = (name) => {
     userName = name;
@@ -61,7 +66,7 @@ export default function App({ navigation }) {
     if (usersData === undefined) {
       alert('ככל הנראה ההתאמה בין שם המשתמש והסיסמא שגויה');
     } else {
-      RedirectApp2Web(usersData.UserName); // for future fix, maybe it should be sending name and password or make name uniqe in the database
+     // RedirectApp2Web(usersData.UserName); // for future fix, maybe it should be sending name and password or make name uniqe in the database
     }
   }
 
@@ -130,6 +135,8 @@ export default function App({ navigation }) {
         <GoogleLoginBtn />
       </View>
       <View>
+      <Button title="כפתור זמני לייבוא אנשי קשר" onPress={getUserContacts} />
+
         <Button title="רוצה ליצור משתמש ללא שימוש ברשת חברתית?" onPress={GoToRegister} />
       </View>
     </View>);
