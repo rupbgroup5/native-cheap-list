@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 5316,
+  "expoServerNgrokUrl": "https://vu-n8m.yogev.native-cheap-list.exp.direct",
+  "packagerNgrokUrl": "https://packager.vu-n8m.yogev.native-cheap-list.exp.direct",
+  "ngrokPid": 9296,
   "webpackServerPort": null
 }
