@@ -26,7 +26,11 @@ let GoogleLogin = async () => {
         console.log(newUser.UserName + " " + newUser.UserMail);
 
         //if I wants to obtain an img: --> newUser.photoUrl = user.photoUrl;
-        insert(newUser);
+
+        //need to add check if the user is allready in the data base...
+        //if exist → login if not → reg + login
+        //future to be automatic if the user is allready exist.
+        // insert(newUser);
         RedirectApp2Web(newUser.UserName);
     }
 }

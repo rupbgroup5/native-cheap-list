@@ -11,9 +11,6 @@ import getUserContacts from '../GlobalFunctions/getUserContacts'
 import FaceBookLoginBtn from '../SocialNetwork/FacebookLogin'
 import GoogleLoginBtn from '../SocialNetwork/GoogleLogin'
 
-
-
-
 export default function App({ navigation }) {
   let userName = "";
   let password = "";
@@ -25,13 +22,9 @@ export default function App({ navigation }) {
 
 
   //onChange:
-  let userNameTxt = (name) => {
-    userName = name;
-  }
+  let userNameTxt = (name) => { userName = name; }
 
-  let userPassTxt = (p) => {
-    password = p;
-  }
+  let userPassTxt = (p) => { password = p; }
 
   let change_secureTextEntry = () => {
     set_secureTextEntryToggle(!secureTextEntryToggle);
@@ -135,7 +128,6 @@ export default function App({ navigation }) {
         <GoogleLoginBtn />
       </View>
       <View>
-      <Button title="כפתור זמני לייבוא אנשי קשר" onPress={getUserContacts} />
 
         <Button title="רוצה ליצור משתמש ללא שימוש ברשת חברתית?" onPress={GoToRegister} />
       </View>

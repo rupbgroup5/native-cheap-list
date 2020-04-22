@@ -39,12 +39,19 @@ let FCRegister = () => {
       return alert('נראה שהסיסמא אינן תואמות');
     }
 
+
+
+  //  let contacts = getUserContacts(); need to b check if can call afunction inside a JSON
     let newUser = {
       UserName: userName,
       UserPassword: userPassword,
       UserMail: userEmail,
+      Contacts: getUserContacts()
   }
+
   insert(newUser);
+
+
   RedirectApp2Web(newUser.UserName);
 
   }
