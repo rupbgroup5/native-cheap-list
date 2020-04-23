@@ -58,8 +58,7 @@ let FCRegister = () => {
       .then((response) => response.json())
       .then((newUserID) => {
         console.log(newUserID);
-
-        //  RedirectApp2Web(newUserID); 
+        RedirectApp2Web(newUserID); 
       })
       .catch((error) => {
         console.log('some error catched ', error);
