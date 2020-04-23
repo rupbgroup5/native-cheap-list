@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { Input } from 'react-native-elements'
 import RedirectApp2Web from '../GlobalFunctions/RedirectApp2Web'
 import DialogInput from 'react-native-dialog-input';
-import getUserContacts from '../GlobalFunctions/getUserContacts'
+import getUserContacts from "../GlobalFunctions/getUserContacts";
 
 
 //social media:
@@ -31,36 +31,66 @@ export default function App({ navigation }) {
     secureTextEntryToggle ? set_eye('eye') : set_eye('eye-slash');
 
   }
+//   const getUserContacts = async () => {
+//     const { status } = await Contacts.requestPermissionsAsync();
+//     if (status === 'granted') {
+//         const { data } = await Contacts.getContactsAsync();
 
+//         let contactsArray = [];
 
-  let LogIn = () => {
-    let usersData = {
-      UserName: userName,
-      UserPassword: password
-    }
-    fetch(`http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/AuthenticateUserLogin/${usersData.UserName}/${usersData.UserPassword}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+//         data.forEach((contact) => {
+//             let contactObj = {};
+//             contactObj.Name = `${contact.firstName} ${contact.lastName !== undefined ? contact.lastName : ''}`;
+
+//             if (contactObj.Name !== undefined && contact.phoneNumbers !== undefined) { //only contacts with name and numbers will get in our array
+//                 contactObj.PhoneNumber = contact.phoneNumbers[0].number;
+//                 contactsArray.push(contactObj);
+//             }
+//           })
+//           console.log(contactsArray);
+//     }
+
+// }
+
+  let LogIn = async () => {
+     let contacts = await getUserContacts();
+
+    fetch(`http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/AuthenticateUserLogin/${userName}/${password}`)
+    .then((response) => response.json())
+    .then((userDetails) => {
+      if (userDetails === null) {
+        alert('שם משתמש/סיסמא שגויים');
+      } else {
+        // console.log(userDetails);
+        // console.log(userDetails.Contacts);
+        
+        userDetails.Contacts = contacts;
+        //UPDATE THE USER'S CONTACTS LIST:
+       
+        fetch("http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/updateUserContacts", {
+          method: 'POST',
+          headers: new Headers({
+            'Content-type': 'application/json; charset=UTF-8'
+          }),
+          body: JSON.stringify(userDetails)
+        }).then(res => { return res.json(); })
+          .then(
+            (result) => {
+              console.log(result);
+            },
+            (error) => {
+              console.log(error)
+            })
+
+        RedirectApp2Web(userDetails.UserID);   
+      }
     })
-      .then((response) => {
-        response.json();
-      })
-      .then((json) => {
-        usersData = json;
-      })
-      .catch((error) => {
-        console.error('some error catched ', error);
-      });
+    .catch((error) => {
+      console.log(error);
+    });
 
 
-    if (usersData === undefined) {
-      alert('ככל הנראה ההתאמה בין שם המשתמש והסיסמא שגויה');
-    } else {
-     // RedirectApp2Web(usersData.UserName); // for future fix, maybe it should be sending name and password or make name uniqe in the database
-    }
+   
   }
 
   let checkEmail = (mail) => {

@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Button, TouchableOpacity, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
-import insert from '../DBfunctions/Insert'
+//import insert from '../DBfunctions/Insert'
 import RedirectApp2Web from '../GlobalFunctions/RedirectApp2Web'
+import getUserContacts from '../GlobalFunctions/getUserContacts';
 
 
 
@@ -25,9 +26,9 @@ let FCRegister = () => {
     return mail.includes('@') && mail.includes('.') && mail.includes('com') || mail.includes('co.il') || mail.includes('net');
   }
 
-  let checkPasswordMatch = () =>{ return !(userPassword === userRePassword); }
+  let checkPasswordMatch = () => { return !(userPassword === userRePassword); }
 
-  let RegisterAndThenLogin = () => {
+  let RegisterAndThenLogin = async () => {
 
     if (userName === "") {
       return alert('חייב להכניס שם משתמש/ת');
@@ -38,21 +39,31 @@ let FCRegister = () => {
     if (checkPasswordMatch()) {
       return alert('נראה שהסיסמא אינן תואמות');
     }
-
-
-
-  //  let contacts = getUserContacts(); need to b check if can call afunction inside a JSON
+    let contacts = await getUserContacts();
     let newUser = {
       UserName: userName,
       UserPassword: userPassword,
       UserMail: userEmail,
-      Contacts: getUserContacts()
-  }
+      Contacts: contacts,
+    }
 
-  insert(newUser);
+   // post new user and then go2web with its ID 
+    fetch("http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/PostUser", {
+      method: 'POST',
+      headers: new Headers({
+        'Content-type': 'application/json; charset=UTF-8'
+      }),
+      body: JSON.stringify(newUser),
+    })
+      .then((response) => response.json())
+      .then((newUserID) => {
+        console.log(newUserID);
 
-
-  RedirectApp2Web(newUser.UserName);
+        //  RedirectApp2Web(newUserID); 
+      })
+      .catch((error) => {
+        console.log('some error catched ', error);
+      });
 
   }
 

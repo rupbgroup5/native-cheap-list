@@ -1,7 +1,7 @@
 import * as WebBrowser from 'expo-web-browser'
 
-const RedirectApp2Web = (user_name) => {
-    WebBrowser.openBrowserAsync(`http://proj.ruppin.ac.il/bgroup5/FinalProject/frontEnd/#/TempPage/${user_name}`);
+const RedirectApp2Web = (transportUserData) => {
+    WebBrowser.openBrowserAsync(`http://proj.ruppin.ac.il/bgroup5/FinalProject/frontEnd/#/TempPage/${transportUserData}`);
 }
 
 export default RedirectApp2Web

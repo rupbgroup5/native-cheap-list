@@ -11,6 +11,15 @@ const getUserContacts = async () => {
             let contactObj = {};
             contactObj.Name = `${contact.firstName} ${contact.lastName !== undefined ? contact.lastName : ''}`;
 
+            //#region  c# is much better
+            // let tempName = 
+            // if (tempName.includes(`"`)) {
+            //     contactObj.Name = tempName.replace(`"`, `'`);
+            // } else {
+            //     contactObj.Name = tempName;
+            // }
+            //#endregion
+
             if (contactObj.Name !== undefined && contact.phoneNumbers !== undefined) { //only contacts with name and numbers will get in our array
                 contactObj.PhoneNumber = contact.phoneNumbers[0].number;
                 contactsArray.push(contactObj);
