@@ -3,8 +3,8 @@ import { Button, TouchableOpacity, StyleSheet, View, Text } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Input } from 'react-native-elements'
 import RedirectApp2Web from '../GlobalFunctions/RedirectApp2Web'
-import DialogInput from 'react-native-dialog-input';
-import getUserContacts from "../GlobalFunctions/getUserContacts";
+import DialogInput from 'react-native-dialog-input'
+import getUserContacts from "../GlobalFunctions/getUserContacts"
 
 
 //social media:
