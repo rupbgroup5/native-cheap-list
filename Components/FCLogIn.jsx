@@ -31,42 +31,22 @@ export default function App({ navigation }) {
     secureTextEntryToggle ? set_eye('eye') : set_eye('eye-slash');
 
   }
-//   const getUserContacts = async () => {
-//     const { status } = await Contacts.requestPermissionsAsync();
-//     if (status === 'granted') {
-//         const { data } = await Contacts.getContactsAsync();
 
-//         let contactsArray = [];
-
-//         data.forEach((contact) => {
-//             let contactObj = {};
-//             contactObj.Name = `${contact.firstName} ${contact.lastName !== undefined ? contact.lastName : ''}`;
-
-//             if (contactObj.Name !== undefined && contact.phoneNumbers !== undefined) { //only contacts with name and numbers will get in our array
-//                 contactObj.PhoneNumber = contact.phoneNumbers[0].number;
-//                 contactsArray.push(contactObj);
-//             }
-//           })
-//           console.log(contactsArray);
-//     }
-
-// }
 
   let LogIn = async () => {
      let contacts = await getUserContacts();
 
-    fetch(`http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/AuthenticateUserLogin/${userName}/${password}`)
+    await fetch(`http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/AuthenticateUserLogin/${userName}/${password}`)
     .then((response) => response.json())
     .then((userDetails) => {
       if (userDetails === null) {
         alert('שם משתמש/סיסמא שגויים');
       } else {
-        // console.log(userDetails);
-        // console.log(userDetails.Contacts);
-        
-        userDetails.Contacts = contacts;
-        //UPDATE THE USER'S CONTACTS LIST:
-       
+       userDetails.Contacts = contacts;
+       console.log(userDetails);
+       RedirectApp2Web(userDetails.UserID);    
+
+       // UPDATE THE USER'S CONTACTS LIST:
         fetch("http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/updateUserContacts", {
           method: 'POST',
           headers: new Headers({
@@ -74,23 +54,20 @@ export default function App({ navigation }) {
           }),
           body: JSON.stringify(userDetails)
         }).then(res => { return res.json(); })
-          .then(
-            (result) => {
-              console.log(result);
-            },
-            (error) => {
-              console.log(error)
-            })
+        .then(
+          (result) => {
+            console.log(result);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
 
-        RedirectApp2Web(userDetails.UserID);   
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
-
-   
   }
 
   let checkEmail = (mail) => {

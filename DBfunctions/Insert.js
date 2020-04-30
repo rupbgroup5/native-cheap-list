@@ -3,15 +3,15 @@ let backEnDApiUrl = 'http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/A
 const insert = (userDetails) => {
     fetch(backEnDApiUrl, {
         method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json; charset=UTF-8',
-        },
+        headers: new Headers({
+            'Content-type': 'application/json; charset=UTF-8'
+        }),
         body: JSON.stringify(userDetails),
     })
         .then((response) => response.json())
         .then((json) => {
             console.log(json);
+            //return json;
         })
         .catch((error) => {
             console.error('some error catched ', error);

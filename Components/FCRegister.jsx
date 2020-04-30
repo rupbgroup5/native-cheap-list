@@ -37,7 +37,7 @@ let FCRegister = () => {
       return alert('אנא הכניסו מייל חוקי');
     }
     if (checkPasswordMatch()) {
-      return alert('נראה שהסיסמא אינן תואמות');
+      return alert('נראה שהסיסמאות אינן תואמות');
     }
     let contacts = await getUserContacts();
     let newUser = {
