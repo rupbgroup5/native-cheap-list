@@ -21,8 +21,9 @@ const Register4PN_AndGetToken_Async = async () => {
     }
     // Get the token that uniquely identifies the user's device
     let token = await Notifications.getExpoPushTokenAsync();
-
-    return (token);
+    let Register_Date_numberRepresntation = new Date().valueOf();//Returns the stored time value in milliseconds since midnight, January 1, 1970 UTC.
+    //post database for the Register_Date_numberRepresntation and store the token
+    return (token); //I dont think I need to return the token since the use of pn is in the react js
 
 }
 

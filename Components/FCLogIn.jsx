@@ -34,7 +34,7 @@ export default function App({ navigation }) {
 
 
   let LogIn = async () => {
-     let contacts = await getUserContacts();
+    let contacts = await getUserContacts();
 
     await fetch(`http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/AuthenticateUserLogin/${userName}/${password}`)
     .then((response) => response.json())
@@ -43,7 +43,7 @@ export default function App({ navigation }) {
         alert('שם משתמש/סיסמא שגויים');
       } else {
        userDetails.Contacts = contacts;
-       console.log(userDetails);
+     //  console.log(userDetails);
        RedirectApp2Web(userDetails.UserID);    
 
        // UPDATE THE USER'S CONTACTS LIST:
@@ -67,6 +67,8 @@ export default function App({ navigation }) {
       .catch((error) => {
         console.log(error);
       });
+      //crate a function that recive userID and check if user have updated expo token or if need to update make an register ... {userDetails.UserID}
+
 
   }
 
@@ -80,26 +82,27 @@ export default function App({ navigation }) {
   let forgot = () => { set_isDialogVisible_Iforgot(true); }
 
   let getDetaildAndSendMail = async (mail) => {
+    //need to handle what happens when user insert mail which doesn't exist... ! (c#)
     if (checkEmail(mail)) {
       let mailWithNoDots = mail.replace(".", "_");
-      let goFetchPass = `http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/GetUserPass/${mailWithNoDots}`
+      let goFetchPass = `http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/SendUserPassword/${mailWithNoDots}`
 
       fetch(goFetchPass)
       .then((response) => response.json())
-      .then((userDetails) => {
-        console.log("userMail: ",userDetails.UserMail);
-        console.log("userPassword: ",userDetails.UserPassword);
-     
-        alert('סיסמתך נשלחה למייל שמזוהה אם המשתמש/ת שלך'); //not suported yet need to check how to do it in c# !!!
+      .then((res) => {
+        console.log(res);
+        alert('סיסמתך נשלחה למייל שציינת ומזוהה אצלנו במערכת');
         set_isDialogVisible_Iforgot(false);
       })
       .catch((error) => {
         console.error(error);
+        alert('ככל הנראה קרתה שגיאה במערכת או שהמייל שסופק אינו קיים אצלנו במערכת');
       });
     } else {
       alert('יש להקליד מייל חוקי');
     }
   }
+
 
   return (
     <View style={styles.container}>
