@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, TouchableOpacity, StyleSheet, View, Text } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Input } from 'react-native-elements'
@@ -11,6 +11,10 @@ import getUserContacts from "../GlobalFunctions/getUserContacts"
 import FaceBookLoginBtn from '../SocialNetwork/FacebookLogin'
 import GoogleLoginBtn from '../SocialNetwork/GoogleLogin'
 
+
+//push notdfications:
+import handleExpoRegisteration from '../PushNotifications/handleExpoRegisteration'
+
 export default function App({ navigation }) {
   let userName = "";
   let password = "";
@@ -18,8 +22,6 @@ export default function App({ navigation }) {
   const [secureTextEntryToggle, set_secureTextEntryToggle] = useState(true);
   const [eye, set_eye] = useState('eye-slash');
   const [isDialogVisible_Iforgot, set_isDialogVisible_Iforgot] = useState(false);
-
-
 
   //onChange:
   let userNameTxt = (name) => { userName = name; }
@@ -43,8 +45,9 @@ export default function App({ navigation }) {
         alert('שם משתמש/סיסמא שגויים');
       } else {
        userDetails.Contacts = contacts;
-     //  console.log(userDetails);
-       RedirectApp2Web(userDetails.UserID);    
+      // console.log(userDetails);
+        handleExpoRegisteration(userDetails.UserID);
+        RedirectApp2Web(userDetails.UserID);
 
        // UPDATE THE USER'S CONTACTS LIST:
         fetch("http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/updateUserContacts", {
@@ -59,13 +62,13 @@ export default function App({ navigation }) {
             console.log(result);
           })
           .catch((error) => {
-            console.log(error);
+            console.log("updateUserContacts error: ! -> ",error);
           });
 
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.log("AuthenticateUserLogin : ! ->",error);
       });
       //crate a function that recive userID and check if user have updated expo token or if need to update make an register ... {userDetails.UserID}
 
@@ -91,7 +94,7 @@ export default function App({ navigation }) {
       .then((response) => response.json())
       .then((res) => {
         console.log(res);
-        alert('סיסמתך נשלחה למייל שציינת ומזוהה אצלנו במערכת');
+        alert('סיסמתך נשלחה למייל שציינת ומזוהה אצלנו במערכת'); //handeled in the backend
         set_isDialogVisible_Iforgot(false);
       })
       .catch((error) => {

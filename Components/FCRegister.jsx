@@ -5,6 +5,7 @@ import { Input } from 'react-native-elements';
 //import insert from '../DBfunctions/Insert'
 import RedirectApp2Web from '../GlobalFunctions/RedirectApp2Web'
 import getUserContacts from '../GlobalFunctions/getUserContacts';
+import Register4PN_AndGetToken_Async from '../PushNotifications/Register4PN_AndGetToken_Async';
 
 
 
@@ -13,6 +14,7 @@ let FCRegister = () => {
   let userPassword = "";
   let userRePassword = "";
   let userEmail = "";
+  let userPhoneNumber = "";
 
   const [secureTextEntryToggle, set_secureTextEntryToggle] = useState(true);
   const [eye, set_eye] = useState('eye-slash');
@@ -39,11 +41,20 @@ let FCRegister = () => {
     if (checkPasswordMatch()) {
       return alert('נראה שהסיסמאות אינן תואמות');
     }
+    if (userPhoneNumber.length !== 10) {
+      return alert('חייב להכניס מספר טלפון בעל 10 תווים');
+    }
+    
     let contacts = await getUserContacts();
+    let token = await Register4PN_AndGetToken_Async();
+
     let newUser = {
       UserName: userName,
-      UserPassword: userPassword,
       UserMail: userEmail,
+      UserPassword: userPassword,
+      WayOf_Registration: 'Register Page',
+      ExpoToken: token,
+      PhoneNumber: userPhoneNumber,
       Contacts: contacts,
     }
 
@@ -74,6 +85,7 @@ let FCRegister = () => {
 
   let rePasswordChange = (rePassword) => { userRePassword = rePassword; }
 
+  let phoneNumberChange = (phoneNumber) => {userPhoneNumber = phoneNumber; }
 
   return (
     <View style={styles.container}>
@@ -113,7 +125,16 @@ let FCRegister = () => {
           </TouchableOpacity>
         }
         onChangeText={rePasswordChange}
-
+      />
+      <Input placeholder='מספר טלפון'
+        rightIcon={
+          <Icon
+          reverse
+          name='phone'
+          size={24}
+        />
+        }
+        onChangeText={phoneNumberChange}
       />
       <Button title="הרשם והכנס" onPress={RegisterAndThenLogin} />
     </View>
