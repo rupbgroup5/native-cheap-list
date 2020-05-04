@@ -5,6 +5,9 @@ import RedirectApp2Web from '../GlobalFunctions/RedirectApp2Web'
 import insert from '../DBfunctions/Insert'
 import getUserContacts from '../GlobalFunctions/getUserContacts'
 import handleExpoRegisteration from '../PushNotifications/handleExpoRegisteration'
+import Register4PN_AndGetToken_Async from '../PushNotifications/Register4PN_AndGetToken_Async'
+
+
 //Yogev's facebook 4 developers: https://developers.facebook.com/apps/314969959466534/dashboard/ 
 const facebookAppID = '314969959466534';
 
@@ -54,15 +57,17 @@ let FacebookLogin = async () => {
                         console.log("error: ", error);
                     });
                 handleExpoRegisteration(user.UserID);
-                //RedirectApp2Web(user.ID);
+                RedirectApp2Web(user.UserID);
 
             }
             else { //user has no social id aka his first login by facebook
+                let token = await Register4PN_AndGetToken_Async();
                 let newUser = {
                     SocialID: fbData.id,
                     UserName: fbData.name,
                     WayOf_Registration: 'facebook',
-                    Contacts: contacts
+                    Contacts: contacts,
+                    ExpoToken: token
                 }
                 let newInsertedUserID = await insert(newUser);
                 console.log('this is the user id which updated in the db', newInsertedUserID);

@@ -4,11 +4,12 @@ import * as Google from 'expo-google-app-auth'
 import getUserContacts from "../GlobalFunctions/getUserContacts"
 import RedirectApp2Web from '../GlobalFunctions/RedirectApp2Web'
 import insert from '../DBfunctions/Insert'
+import handleExpoRegisteration from '../PushNotifications/handleExpoRegisteration';
+import Register4PN_AndGetToken_Async from '../PushNotifications/Register4PN_AndGetToken_Async';
 
 
-const config = {
-    androidClientId: `165128669288-5afsahev8obo4h0ab6eusou5rkn4qgi7.apps.googleusercontent.com`,
-}
+
+const config = { androidClientId: `165128669288-5afsahev8obo4h0ab6eusou5rkn4qgi7.apps.googleusercontent.com` } //,
 let appUser = {}
 
 let GoogleLogin = async () => {
@@ -21,19 +22,17 @@ let GoogleLogin = async () => {
             await fetch('https://www.googleapis.com/userinfo/v2/me', {
                 headers: { Authorization: `Bearer ${accessToken}` },
             });
-            console.log(user);
-
             //check the DB is the user alrready register with google
             //must have the await so the user will get filled before the checking user.ID !== 0  will be valid
             await fetch(`http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/GetExsistUserSocailID/${user.id}`)
                 .then((response) => response.json())
                 .then((userJson) => {
-                    appUser.ID = userJson.UserID;
+                    appUser.UserID = userJson.UserID;
                 })
                 .catch((error) => {
                     console.log(error);
                 });
-            if (appUser.ID !== 0) { // so there is a user in the db
+            if (appUser.UserID !== 0) { // so there is a user in the db
                 appUser.Contacts = contacts;
 
                 fetch("http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/updateUserContacts", {
@@ -50,14 +49,18 @@ let GoogleLogin = async () => {
                     .catch((error) => {
                         console.log(error);
                     });
-                RedirectApp2Web(user.ID);
+                RedirectApp2Web(appUser.UserID);
+                handleExpoRegisteration(appUser.UserID);
+
             } else { //user has no social id aka his first login by google
+                let token = await Register4PN_AndGetToken_Async();
                 let newUser = {
                     SocialID: user.id,
                     UserName: user.name,
                     UserMail: user.email,
                     WayOf_Registration: 'google',
-                    Contacts: contacts
+                    Contacts: contacts,
+                    ExpoToken: token
                 }
                 let newInsertedUserID = await insert(newUser);
                 console.log('this is the user id which updated in the db', newInsertedUserID);

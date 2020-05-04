@@ -3,8 +3,6 @@ import Register4PN_AndGetToken_Async from "./Register4PN_AndGetToken_Async"
 const handleExpoRegisteration = async (userID) => {
     let token = null;
     let isRegisterToday = null;
-    let today = new Date().toLocaleString();
-    console.log("today: ", today);
 
 
     await fetch(`http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/IsExpoTokenUpdated/${userID}`)
@@ -22,8 +20,6 @@ const handleExpoRegisteration = async (userID) => {
         let userUpdateFields = {
             UserID: userID,
             ExpoToken: token,
-            DateOfLast_Register: today
-
         }
         fetch("http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/updateUserExpoToken", {
             method: 'POST',
