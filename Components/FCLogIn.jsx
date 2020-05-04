@@ -94,7 +94,7 @@ export default function App({ navigation }) {
       .then((response) => response.json())
       .then((res) => {
         console.log(res);
-        alert('סיסמתך נשלחה למייל שציינת ומזוהה אצלנו במערכת'); //handeled in the backend
+        alert(res); //handeled in the backend
         set_isDialogVisible_Iforgot(false);
       })
       .catch((error) => {
