@@ -24,24 +24,22 @@ let FacebookLogin = async () => {
             const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
             const fbData = await response.json();
 
-            console.log(fbData); //<--------------------
-
 
             // check the DB is the user alrready register with facebook
             // must have the await so the user will get filled before the checking user.ID !== 0  will be valid
             await fetch(`http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/GetExsistUserSocailID/${fbData.id}`)
                 .then((response) => response.json())
                 .then((userJson) => {
-                    user.ID = userJson.UserID;
+                    user.UserID = userJson.UserID;
                 })
                 .catch((error) => {
                     console.log(error);
                 });
 
-            if (user.ID !== 0) { // so there is a user in the db
+            if (user.UserID !== 0) { // so there is a user in the db
                 user.Contacts = contacts;
 
-                fetch('http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/updateUserContacts', {
+                fetch("http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/updateUserContacts", {
                     method: 'POST',
                     headers: new Headers({
                         'Content-type': 'application/json; charset=UTF-8'
@@ -50,44 +48,26 @@ let FacebookLogin = async () => {
                 }).then(res => { return res.json(); })
                     .then(
                         (result) => {
-                            console.log(result);
-                        },
-                        (error) => {
-                            console.log(error)
+                            console.log("result: ", result);
                         })
-
-
-
-
-                // fetch("http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/updateUserContacts", {
-                //     method: 'POST',
-                //     headers: new Headers({
-                //         'Content-type': 'application/json; charset=UTF-8'
-                //     }),
-                //     body: JSON.stringify(user)
-                // }).then(res => { return res.json(); })
-                //     .then(
-                //         (result) => {
-                //             console.log("result: ", result);
-                //         })
-                //     .catch((error) => {
-                //         console.log("error: ", error);
-                //     });
-                // handleExpoRegisteration(user.ID);
-                // RedirectApp2Web(user.ID);
+                    .catch((error) => {
+                        console.log("error: ", error);
+                    });
+                handleExpoRegisteration(user.UserID);
+                //RedirectApp2Web(user.ID);
 
             }
-            //  else { //user has no social id aka his first login by facebook
-            //     let newUser = {
-            //         SocialID: fbData.id,
-            //         UserName: fbData.name,
-            //         WayOf_Registration: 'facebook',
-            //         Contacts: contacts
-            //     }
-            //     let newInsertedUserID = await insert(newUser);
-            //     console.log('this is the user id which updated in the db', newInsertedUserID);
-            //     // RedirectApp2Web(newInsertedUserID);
-            // }
+            else { //user has no social id aka his first login by facebook
+                let newUser = {
+                    SocialID: fbData.id,
+                    UserName: fbData.name,
+                    WayOf_Registration: 'facebook',
+                    Contacts: contacts
+                }
+                let newInsertedUserID = await insert(newUser);
+                console.log('this is the user id which updated in the db', newInsertedUserID);
+                RedirectApp2Web(newInsertedUserID);
+            }
 
         } else {
             console.log('user doesnt aprove using his facebook details');

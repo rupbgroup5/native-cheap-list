@@ -2,8 +2,10 @@ import Register4PN_AndGetToken_Async from "./Register4PN_AndGetToken_Async"
 
 const handleExpoRegisteration = async (userID) => {
     let token = null;
-    let isRegisterToday = false;
-    let today = new Date().toLocaleDateString();
+    let isRegisterToday = null;
+    let today = new Date().toLocaleString();
+    console.log("today: ", today);
+
 
     await fetch(`http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/IsExpoTokenUpdated/${userID}`)
         .then((response) => response.json())
@@ -42,9 +44,6 @@ const handleExpoRegisteration = async (userID) => {
         console.log("cheap list system has decided not to update this user's expo token since its not his first login today");
 
     }
-
-
-
 }
 
 export default handleExpoRegisteration;
