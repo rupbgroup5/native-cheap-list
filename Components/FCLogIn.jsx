@@ -94,7 +94,7 @@ export default function App({ navigation }) {
       .then((response) => response.json())
       .then((res) => {
         console.log(res);
-        alert(res); //handeled in the backend
+        alert(res); //handeled in the backend orelkarmi10@gmail.com
         set_isDialogVisible_Iforgot(false);
       })
       .catch((error) => {

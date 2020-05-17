@@ -49,6 +49,8 @@ let GoogleLogin = async () => {
                     .catch((error) => {
                         console.log(error);
                     });
+                console.log("redirect to web with id: ", appUser.UserID);
+
                 RedirectApp2Web(appUser.UserID);
                 handleExpoRegisteration(appUser.UserID);
 
