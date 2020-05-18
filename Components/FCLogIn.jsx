@@ -142,7 +142,7 @@ export default function App({ navigation }) {
       </View>
       <View>
 
-        <Button title="רוצה ליצור משתמש ללא שימוש ברשת חברתית?" onPress={GoToRegister} />
+        <Button title="יצירת משתמש חדש" onPress={GoToRegister} />
       </View>
     </View>);
 }
