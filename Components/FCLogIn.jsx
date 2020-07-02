@@ -85,7 +85,6 @@ export default function App({ navigation }) {
   let forgot = () => { set_isDialogVisible_Iforgot(true); }
 
   let getDetaildAndSendMail = async (mail) => {
-    //need to handle what happens when user insert mail which doesn't exist... ! (c#)
     if (checkEmail(mail)) {
       let mailWithNoDots = mail.replace(".", "_");
       let goFetchPass = `http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/SendUserPassword/${mailWithNoDots}`
@@ -94,7 +93,7 @@ export default function App({ navigation }) {
       .then((response) => response.json())
       .then((res) => {
         console.log(res);
-        alert(res); //handeled in the backend orelkarmi10@gmail.com
+        alert(res); 
         set_isDialogVisible_Iforgot(false);
       })
       .catch((error) => {

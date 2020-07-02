@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 18288,
-  "expoServerNgrokUrl": "https://3q-3ga.yogev.native-cheap-list.exp.direct",
-  "packagerNgrokUrl": "https://packager.3q-3ga.yogev.native-cheap-list.exp.direct",
-  "ngrokPid": 17620,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }
