@@ -1,53 +1,39 @@
+import * as Location from 'expo-location'
 
+const UpdateUserCordinates = async (ID) => {
+    let backEnDApiUrl = 'http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/UpdateUserCoords';
 
-const UpdateUserCordinates = (userID) => {
+    var longitude;
+    var latitude;
 
-    let longitude;
-    let latitude;
+    let { status } = await Location.requestPermissionsAsync();
 
+    if (status !== 'granted') {
+        console.log('user declined location permission');
+    } else {
+        let location = await Location.getCurrentPositionAsync({});
 
-    navigator.geolocation.getCurrentPosition(position => {
+        let user = {
+            UserID: ID,
+            Longitude: location.coords.longitude,
+            Latitude: location.coords.latitude
+        }
 
-        longitude = position.coords.longitude;
-        latitude = position.coords.latitude;
+        fetch(backEnDApiUrl, {
+            method: 'POST',
+            headers: new Headers({
+                'Content-type': 'application/json; charset=UTF-8'
+            }),
+            body: JSON.stringify(user),
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json);
+            })
+            .catch((error) => {
+                console.log('some error catched ', error);
+            });
+    }
 
-
-
-        // let backEnDApiUrl = 'http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/ ??? ';
-
-        // await fetch(backEnDApiUrl, {
-        //     method: 'POST',
-        //     headers: new Headers({
-        //         'Content-type': 'application/json; charset=UTF-8'
-        //     }),
-        //     body: JSON.stringify(userDetails),
-        // })
-        //     .then((response) => response.json())
-        //     .then((json) => {
-        //         console.log(json);
-
-        //     })
-        //     .catch((error) => {
-        //         console.error('some error catched ', error);
-        //     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    })
 }
 export default UpdateUserCordinates;
