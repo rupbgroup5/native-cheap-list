@@ -3,9 +3,6 @@ import * as Location from 'expo-location'
 const UpdateUserCordinates = async (ID) => {
     let backEnDApiUrl = 'http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/UpdateUserCoords';
 
-    var longitude;
-    var latitude;
-
     let { status } = await Location.requestPermissionsAsync();
 
     if (status !== 'granted') {
