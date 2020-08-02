@@ -1,23 +1,14 @@
 import * as WebBrowser from 'expo-web-browser'
 import UpdateUserCordinates from './UpdateUserCordinates'
 
-const RedirectApp2Web = async (user) => {
+const RedirectApp2Web = async (userID) => {
 
-    await UpdateUserCordinates(user.UserID);
-    if (user.UserName === user.PhoneNumber) {
-        console.log('if');
-        WebBrowser.openBrowserAsync(
-            `http://proj.ruppin.ac.il/bgroup5/FinalProject/frontEnd/#/UserProfile/${user.UserID}`
-        );
-    } else {
-        console.log('else');
-        WebBrowser.openBrowserAsync(
-            `http://proj.ruppin.ac.il/bgroup5/FinalProject/frontEnd/#/HomePage/${user.UserID}`
-        );
-    }
-
-
-
+    await UpdateUserCordinates(userID);
+    
+    WebBrowser.openBrowserAsync(
+        `http://proj.ruppin.ac.il/bgroup5/FinalProject/frontEnd/#/HomePage/${userID}`
+    );
+    
 }
 
 export default RedirectApp2Web

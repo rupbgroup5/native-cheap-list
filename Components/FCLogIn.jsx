@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button, TouchableOpacity, StyleSheet, View, Text } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Input } from 'react-native-elements'
 import RedirectApp2Web from '../GlobalFunctions/RedirectApp2Web'
 import DialogInput from 'react-native-dialog-input'
 import getUserContacts from "../GlobalFunctions/getUserContacts"
+import Redirect2WebFromLogin from '../GlobalFunctions/Redirect2WebFromLogin'
+
 
 
 //social media:
@@ -14,6 +16,7 @@ import GoogleLoginBtn from '../SocialNetwork/GoogleLogin'
 
 //push notdfications:
 import handleExpoRegisteration from '../PushNotifications/handleExpoRegisteration'
+
 
 export default function App({ navigation }) {
   let userName = "";
@@ -45,9 +48,15 @@ export default function App({ navigation }) {
         alert('שם משתמש/סיסמא שגויים');
       } else {
        userDetails.Contacts = contacts;
-      // console.log(userDetails);
+      
         handleExpoRegisteration(userDetails.UserID);
-        RedirectApp2Web(userDetails);
+        if (userDetails.UserName === userDetails.PhoneNumber) {
+          console.log('userDeatils', userDetails)
+          Redirect2WebFromLogin(userDetails.UserID);
+    } else {
+       RedirectApp2Web(userDetails.UserID);
+    }
+        
 
        // UPDATE THE USER'S CONTACTS LIST:
         fetch("http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/updateUserContacts", {
