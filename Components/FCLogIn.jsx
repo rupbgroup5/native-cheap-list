@@ -70,7 +70,6 @@ export default function App({ navigation }) {
       .catch((error) => {
         console.log("AuthenticateUserLogin : ! ->",error);
       });
-      //crate a function that recive userID and check if user have updated expo token or if need to update make an register ... {userDetails.UserID}
 
 
   }
