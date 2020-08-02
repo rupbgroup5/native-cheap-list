@@ -47,7 +47,7 @@ export default function App({ navigation }) {
        userDetails.Contacts = contacts;
       // console.log(userDetails);
         handleExpoRegisteration(userDetails.UserID);
-        RedirectApp2Web(userDetails.UserID);
+        RedirectApp2Web(userDetails);
 
        // UPDATE THE USER'S CONTACTS LIST:
         fetch("http://proj.ruppin.ac.il/bgroup5/FinalProject/backEnd/api/AppUsers/updateUserContacts", {
